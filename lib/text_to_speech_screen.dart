@@ -13,10 +13,10 @@ class _HomeAppState extends State<HomeApp> {
   FlutterTts flutterTts;
   dynamic languages;
   String language;
-  double volume = 1.5;
+  double volume = 3.5;
   double pitch = 1.0;
   double rate = 1.0;
-
+  bool isCurrentLanguageInstalled = false;
   String _newVoiceText;
 
   TtsState ttsState = TtsState.stopped;
@@ -88,18 +88,19 @@ class _HomeAppState extends State<HomeApp> {
     flutterTts.stop();
   }
 
-  // List<DropdownMenuItem<String>> getLanguageDropDownMenuItems() {
-  //   var items = List<DropdownMenuItem<String>>();
-  //   for (String type in languages) {
-  //     items.add(DropdownMenuItem(value: type, child: Text(type)));
-  //   }
-  //   return items;
-  // }
+  List<DropdownMenuItem<String>> getLanguageDropDownMenuItems() {
+    var items = List<DropdownMenuItem<String>>();
+    for (String type in languages) {
+      items.add(DropdownMenuItem(value: type, child: Text(type)));
+    }
+    return items;
+  }
 
   void changedLanguageDropDownItem(String selectedType) {
     setState(() {
       language = selectedType;
       flutterTts.setLanguage(language);
+     // flutterTts.isLanguageInstalled(language! ).then((value)=> isCurrentLanguageInstalled = (value as bool));
     });
   }
 
@@ -123,8 +124,9 @@ class _HomeAppState extends State<HomeApp> {
                 scrollDirection: Axis.vertical,
                 child: Column(children: [
                   _inputSection(),
-                //  languages != null ? _languageDropDownSection() : Text(""),
-                 // _buildSliders()
+                 languages != null ? _languageDropDownSection() : Text(""),
+                 // _buildSliders(),
+                 
                 ]))));
   }
 
@@ -143,15 +145,15 @@ class _HomeAppState extends State<HomeApp> {
 
 
 
-  // Widget _languageDropDownSection() => Container(
-  //     padding: EdgeInsets.only(top: 50.0),
-  //     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-  //       DropdownButton(
-  //         value: language,
-  //         items: getLanguageDropDownMenuItems(),
-  //         onChanged: changedLanguageDropDownItem,
-  //       )
-  //     ]));
+  Widget _languageDropDownSection() => Container(
+      padding: EdgeInsets.only(top: 50.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        DropdownButton(
+          value: language,
+          items: getLanguageDropDownMenuItems(),
+          onChanged: changedLanguageDropDownItem,
+        )
+      ]));
 
   Column _buildButtonColumn(Color color, Color splashColor, IconData icon,
       String label, Function func) {
@@ -186,10 +188,11 @@ class _HomeAppState extends State<HomeApp> {
   //       onChanged: (newVolume) {
   //         setState(() => volume = newVolume);
   //       },
-  //       min: 0.0,
-  //       max: 1.0,
-  //       divisions: 10,
-  //       label: "Volume: $volume");
+  //       // min: 0.0,
+  //       // max: 1.0,
+  //       // divisions: 10,
+  //       // label: "Volume: $volume"
+  //       );
   // }
 
   // Widget _pitch() {
@@ -198,11 +201,11 @@ class _HomeAppState extends State<HomeApp> {
   //     onChanged: (newPitch) {
   //       setState(() => pitch = newPitch);
   //     },
-  //     min: 0.5,
-  //     max: 2.0,
-  //     divisions: 15,
-  //     label: "Pitch: $pitch",
-  //     activeColor: Colors.red,
+  //     // min: 0.5,
+  //     // max: 2.0,
+  //     // divisions: 15,
+  //     // label: "Pitch: $pitch",
+  //     // activeColor: Colors.red,
   //   );
   // }
 
@@ -212,11 +215,11 @@ class _HomeAppState extends State<HomeApp> {
   //     onChanged: (newRate) {
   //       setState(() => rate = newRate);
   //     },
-  //     min: 0.0,
-  //     max: 1.0,
-  //     divisions: 10,
-  //     label: "Rate: $rate",
-  //     activeColor: Colors.green,
+  //     // min: 0.0,
+  //     // max: 1.0,
+  //     // divisions: 10,
+  //     // label: "Rate: $rate",
+  //     // activeColor: Colors.green,
   //   );
   // }
 
